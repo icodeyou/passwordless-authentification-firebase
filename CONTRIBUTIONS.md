@@ -2,9 +2,9 @@
 layout: default
 ---
 
-# Contributing to Open Source Guides
+# Contributing to Passwordless-Authentification-Firebase (PAF)
 
-Thanks for checking out the Open Source Guides! We're excited to hear and learn from you. Your experiences will benefit others who read and use these guides.
+Thanks for checking out the PAF project ! We're excited to hear and learn from you. Your experiences will benefit others who read and use these guides.
 
 We've put together the following guidelines to help you figure out where you can best be helpful.
 
@@ -20,10 +20,9 @@ We've put together the following guidelines to help you figure out where you can
 ## Types of contributions we're looking for
 There are many ways you can directly contribute to the guides (in descending order of need):
 
-* Fix editorial inconsistencies or inaccuracies
-* Add stories, examples, or anecdotes that help illustrate a point
-* Revise language to be more approachable and friendly
-* [Translate guides into other languages](docs/translations.md)
+* Fix code inconsistencies
+* Add new features (or suggest some in the [issues](https://github.com/github/jackplugs/passwordless-authentification-firebase/issues))
+* Review documentation to be more accurate and understandable
 
 Interested in making a contribution? Read on!
 
@@ -38,28 +37,18 @@ Before we get started, here are a few things we expect from you (and that you sh
 
 ## How to contribute
 
-If you'd like to contribute, start by searching through the [issues](https://github.com/github/opensource.guide/issues) and [pull requests](https://github.com/github/opensource.guide/pulls) to see whether someone else has raised a similar idea or question.
+If you'd like to contribute, start by searching through the [issues](https://github.com/github/jackplugs/passwordless-authentification-firebase/issues) and [pull requests](https://github.com/github/jackplugs/passwordless-authentification-firebase/pulls) to see whether someone else has raised a similar idea or question.
 
 If you don't see your idea listed, and you think it fits into the goals of this guide, do one of the following:
 * **If your contribution is minor,** such as a typo fix, open a pull request.
 * **If your contribution is major,** such as a new guide, start by opening an issue first. That way, other people can weigh in on the discussion before you do any work.
 
-## Style guide
-If you're writing content, see the [style guide](./docs/styleguide.md) to help your prose match the rest of the Guides.
-
 ## Setting up your environment
 
-This site is powered by [Jekyll](https://jekyllrb.com/). Running it on your local machine requires a working [Ruby](https://www.ruby-lang.org/en/) installation with [Bundler](https://bundler.io/).
-
-Once you have that set up, run:
-
-    script/bootstrap
-    script/server
-
-…and open http://localhost:4000 in your web browser.
+The whole project is based on Firebase Authentication system, so you should configure it according to the file [README](./README.md).
 
 ## Community
 
-Discussions about the Open Source Guides take place on this repository's [Issues](https://github.com/github/opensource.guide/issues) and [Pull Requests](https://github.com/github/opensource.guide/pulls) sections. Anybody is welcome to join these conversations. There is also a [mailing list](http://eepurl.com/cecpnT) for regular updates.
+Discussions about the Open Source Guides take place on this repository's [Issues](https://github.com/github/opensource.guide/issues) and [Pull Requests](https://github.com/github/jackplugs/passwordless-authentification-firebase/pulls) sections. Anybody is welcome to join these conversations. There is also a [mailing list](http://eepurl.com/cecpnT) for regular updates.
 
 Wherever possible, do not take these conversations to private channels, including contacting the maintainers directly. Keeping communication public means everybody can benefit and learn from the conversation.
