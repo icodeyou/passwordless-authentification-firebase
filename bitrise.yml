@@ -1,0 +1,437 @@
+---
+format_version: '8'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: android
+trigger_map:
+- push_branch: staging
+  workflow: staging
+- push_branch: master
+  workflow: prod
+- push_branch: sprint*
+  workflow: dev
+- pull_request_source_branch: "*"
+  workflow: check
+workflows:
+  prod:
+    description: |
+      ## How to get a signed APK
+
+      This workflow contains the **Sign APK** step. To sign your APK all you have to do is to:
+
+      1. Click on **Code Signing** tab
+      1. Find the **ANDROID KEYSTORE FILE** section
+      1. Click or drop your file on the upload file field
+      1. Fill the displayed 3 input fields:
+       1. **Keystore password**
+       1. **Keystore alias**
+       1. **Private key password**
+      1. Click on **[Save metadata]** button
+
+      That's it! From now on, **Sign APK** step will receive your uploaded files.
+
+      ## To run this workflow
+
+      If you want to run this workflow manually:
+
+      1. Open the app's build list page
+      2. Click on **[Start/Schedule a Build]** button
+      3. Select **deploy** in **Workflow** dropdown input
+      4. Click **[Start Build]** button
+
+      Or if you need this workflow to be started by a GIT event:
+
+      1. Click on **Triggers** tab
+      2. Setup your desired event (push/tag/pull) and select **deploy** workflow
+      3. Click on **[Done]** and then **[Save]** buttons
+
+      The next change in your repository that matches any of your trigger map event will start **deploy** workflow.
+    steps:
+    - activate-ssh-key@4.0.3:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@4.0.17: {}
+    - cache-pull@2.1.0: {}
+    - install-missing-android-tools@2.3.7:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - android-lint@0.9.6:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - android-detekt@0.0.2: {}
+    - android-unit-test@0.11.1:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - gradle-runner@1.9.0:
+        inputs:
+        - gradle_task: assembleConnectedDevDebug assembleConnectedDevDebugAndroidTest
+        title: Build Tests APKs (Gradle runner)
+    - virtual-device-testing-for-android@1.0.6:
+        inputs:
+        - test_type: instrumentation
+    - android-build@0.10.0:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - build_type: aab
+        - variant: "$VARIANT"
+    - sign-apk@1.3.1:
+        run_if: '{{getenv "BITRISEIO_ANDROID_KEYSTORE_URL" | ne ""}}'
+    - gradle-runner@1.9.0:
+        inputs:
+        - gradle_task: dokka
+        title: Launch Dokka
+    - script@1.1.5:
+        inputs:
+        - content: |-
+            ls -al
+            mv README.md $BITRISE_DEPLOY_DIR
+        title: Get README.md in artifacts
+    - create-zip@0.9.0:
+        inputs:
+        - destination: "$BITRISE_DEPLOY_DIR"
+        - source_path: "$APPBUILD/code_documentation"
+        title: Zip doc folder / save in artefacts
+    - google-play-deploy@1.6.1:
+        inputs:
+        - package_name: com.dupuis.webtoonfactory
+        - service_account_json_key_path: "$BITRISEIO_BITRISEIO_SERVICE_ACCOUNT_JSON_KEY_URL_URL"
+        - track: internal
+    - deploy-to-bitrise-io@1.7.0:
+        inputs:
+        - deploy_path: "$BITRISE_SIGNED_APK_PATH"
+        title: Deploy Signed App
+    - cache-push@2.2.0: {}
+    envs:
+    - opts:
+        is_expand: false
+      VARIANT: connectedProdRelease
+  staging:
+    description: |
+      ## How to get a signed APK
+
+      This workflow contains the **Sign APK** step. To sign your APK all you have to do is to:
+
+      1. Click on **Code Signing** tab
+      1. Find the **ANDROID KEYSTORE FILE** section
+      1. Click or drop your file on the upload file field
+      1. Fill the displayed 3 input fields:
+       1. **Keystore password**
+       1. **Keystore alias**
+       1. **Private key password**
+      1. Click on **[Save metadata]** button
+
+      That's it! From now on, **Sign APK** step will receive your uploaded files.
+
+      ## To run this workflow
+
+      If you want to run this workflow manually:
+
+      1. Open the app's build list page
+      2. Click on **[Start/Schedule a Build]** button
+      3. Select **deploy** in **Workflow** dropdown input
+      4. Click **[Start Build]** button
+
+      Or if you need this workflow to be started by a GIT event:
+
+      1. Click on **Triggers** tab
+      2. Setup your desired event (push/tag/pull) and select **deploy** workflow
+      3. Click on **[Done]** and then **[Save]** buttons
+
+      The next change in your repository that matches any of your trigger map event will start **deploy** workflow.
+    steps:
+    - activate-ssh-key@4.0.3:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@4.0.17: {}
+    - cache-pull@2.1.0: {}
+    - install-missing-android-tools@2.3.7:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - android-lint@0.9.6:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - android-detekt@0.0.2: {}
+    - android-unit-test@0.11.1:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - gradle-runner@1.9.0:
+        inputs:
+        - gradle_task: assembleConnectedDevDebug assembleConnectedDevDebugAndroidTest
+        title: Build Tests APKs (Gradle runner)
+    - virtual-device-testing-for-android@1.0.6:
+        inputs:
+        - test_type: instrumentation
+    - android-build@0.10.0:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - sign-apk@1.4.0:
+        run_if: '{{getenv "BITRISEIO_ANDROID_KEYSTORE_URL" | ne ""}}'
+    - gradle-runner@1.9.0:
+        inputs:
+        - gradle_task: dokka
+        title: Launch dokka
+    - script@1.1.5:
+        inputs:
+        - content: |-
+            ls -al
+            mv README.md $BITRISE_DEPLOY_DIR
+        title: Get README.md in artifacts
+    - create-zip@0.9.0:
+        inputs:
+        - destination: "$BITRISE_DEPLOY_DIR"
+        - source_path: "$APPBUILD/code_documentation"
+        title: Zip doc folder / save in artefacts
+    - deploy-to-bitrise-io@1.7.0:
+        title: Deploy Documentation
+    - deploy-to-bitrise-io@1.7.0:
+        inputs:
+        - deploy_path: "$BITRISE_SIGNED_APK_PATH"
+        title: Deploy Signed App
+    - cache-push@2.2.0: {}
+    envs:
+    - opts:
+        is_expand: false
+      VARIANT: connectedStagingRelease
+  dev:
+    description: |
+      ## How to get a signed APK
+
+      This workflow contains the **Sign APK** step. To sign your APK all you have to do is to:
+
+      1. Click on **Code Signing** tab
+      1. Find the **ANDROID KEYSTORE FILE** section
+      1. Click or drop your file on the upload file field
+      1. Fill the displayed 3 input fields:
+       1. **Keystore password**
+       1. **Keystore alias**
+       1. **Private key password**
+      1. Click on **[Save metadata]** button
+
+      That's it! From now on, **Sign APK** step will receive your uploaded files.
+
+      ## To run this workflow
+
+      If you want to run this workflow manually:
+
+      1. Open the app's build list page
+      2. Click on **[Start/Schedule a Build]** button
+      3. Select **deploy** in **Workflow** dropdown input
+      4. Click **[Start Build]** button
+
+      Or if you need this workflow to be started by a GIT event:
+
+      1. Click on **Triggers** tab
+      2. Setup your desired event (push/tag/pull) and select **deploy** workflow
+      3. Click on **[Done]** and then **[Save]** buttons
+
+      The next change in your repository that matches any of your trigger map event will start **deploy** workflow.
+    steps:
+    - activate-ssh-key@4.0.3:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@4.0.17: {}
+    - cache-pull@2.1.0: {}
+    - install-missing-android-tools@2.3.7:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - android-lint@0.9.6:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - android-detekt@0.0.2: {}
+    - android-unit-test@0.11.1:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - android-build@0.10.0:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - sign-apk@1.3.1:
+        run_if: '{{getenv "BITRISEIO_ANDROID_KEYSTORE_URL" | ne ""}}'
+    - gradle-runner@1.9.0:
+        title: Launch Dokka
+        inputs:
+        - gradle_task: dokka
+    - script@1.1.5:
+        title: Get README.md in artifacts
+        inputs:
+        - content: |-
+            ls -al
+            mv README.md $BITRISE_DEPLOY_DIR
+    - create-zip@0.9.0:
+        title: Zip doc folder / save in artefacts
+        inputs:
+        - destination: "$BITRISE_DEPLOY_DIR"
+        - source_path: "$APPBUILD/code_documentation"
+    - deploy-to-bitrise-io@1.7.0:
+        title: Deploy Documentation
+    - deploy-to-bitrise-io@1.7.0:
+        inputs:
+        - deploy_path: "$BITRISE_SIGNED_APK_PATH"
+        title: Deploy Signed App
+    - cache-push@2.2.0: {}
+    envs:
+    - opts:
+        is_expand: false
+      VARIANT: connectedDevDebug
+  check:
+    steps:
+    - activate-ssh-key@4.0.3:
+        run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
+    - git-clone@4.0.17:
+        is_always_run: true
+    - cache-pull@2.1.0: {}
+    - install-missing-android-tools@2.3.7:
+        inputs:
+        - gradlew_path: "$PROJECT_LOCATION/gradlew"
+    - gradle-runner@1.9.0:
+        inputs:
+        - gradle_task: ktlint
+        title: Gradle Ktlint check
+        is_always_run: true
+    - android-lint@0.9.6:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - android-unit-test@0.11.1:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+    - gradle-runner@1.9.0:
+        inputs:
+        - gradle_task: dokka
+        title: Launch Dokka
+    - script@1.1.5:
+        inputs:
+        - content: |-
+            ls -al
+            mv README.md $BITRISE_DEPLOY_DIR
+        title: Get README.md in artifacts
+        is_always_run: true
+    - create-zip@0.9.0:
+        inputs:
+        - destination: "$BITRISE_DEPLOY_DIR"
+        - source_path: "$APPBUILD/code_documentation"
+        title: Zip doc folder / save in artefacts
+    - deploy-to-bitrise-io@1.7.0:
+        title: Deploy Documentation
+    envs:
+    - opts:
+        is_expand: false
+      VARIANT: connectedDevDebug
+  local:
+    description: |
+      ## How to get a signed APK
+
+      This workflow contains the **Sign APK** step. To sign your APK all you have to do is to:
+
+      1. Click on **Code Signing** tab
+      1. Find the **ANDROID KEYSTORE FILE** section
+      1. Click or drop your file on the upload file field
+      1. Fill the displayed 3 input fields:
+       1. **Keystore password**
+       1. **Keystore alias**
+       1. **Private key password**
+      1. Click on **[Save metadata]** button
+
+      That's it! From now on, **Sign APK** step will receive your uploaded files.
+
+      ## To run this workflow
+
+      If you want to run this workflow manually:
+
+      1. Open the app's build list page
+      2. Click on **[Start/Schedule a Build]** button
+      3. Select **deploy** in **Workflow** dropdown input
+      4. Click **[Start Build]** button
+
+      Or if you need this workflow to be started by a GIT event:
+
+      1. Click on **Triggers** tab
+      2. Setup your desired event (push/tag/pull) and select **deploy** workflow
+      3. Click on **[Done]** and then **[Save]** buttons
+
+      The next change in your repository that matches any of your trigger map event will start **deploy** workflow.
+    steps:
+    - android-lint@0.9.6:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+        is_always_run: true
+    - android-detekt@0.0.2:
+        is_always_run: true
+    - android-unit-test@0.11.1:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+        is_always_run: true
+    - android-build@0.10.0:
+        inputs:
+        - project_location: "$PROJECT_LOCATION"
+        - module: "$MODULE"
+        - variant: "$VARIANT"
+        is_always_run: true
+    - gradle-runner@1.9.0:
+        inputs:
+        - gradle_task: dokka
+        title: Launch dokka
+        is_always_run: true
+    - script@1.1.5:
+        inputs:
+        - content: |-
+            mkdir -p build/bitrise
+            cp README.md build/
+        title: Copy README.md
+        is_always_run: true
+    - create-zip@0.9.0:
+        inputs:
+        - destination: ''
+        - source_path: "$APPBUILD/code_documentation"
+        title: Zip doc folder / save in artefacts
+        is_always_run: true
+    - script@1.1.5:
+        inputs:
+        - content: |-
+            mv code_documentation.zip build/bitrise
+            rm -f gradle.deps
+        title: clean
+        is_always_run: true
+    envs:
+    - opts:
+        is_expand: false
+      VARIANT: connectedStagingRelease
+app:
+  envs:
+  - opts:
+      is_expand: false
+    PROJECT_LOCATION: "."
+  - opts:
+      is_expand: false
+    MODULE: app
+  - opts:
+      is_expand: false
+    APPBUILD: app/build
+  - opts:
+      is_expand: false
+    VARIANT: ''
+  - opts:
+      is_expand: false
+    GRADLEW_PATH: "./gradlew"
+  - opts:
+      is_expand: false
+    LATEST_VERSION_CODE: '0'

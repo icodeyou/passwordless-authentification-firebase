@@ -1,0 +1,270 @@
+import org.ajoberstar.grgit.Grgit
+
+// Name versions after git tags and commit hashes
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.ajoberstar.grgit:grgit-gradle:3.1.1"
+    }
+}
+
+ext {
+    try {
+        git = Grgit.open(dir: '.')
+        gitVersionName = git.describe()
+        gitVersionCode = (git.tag.list().size() + 1)
+        git.close()
+    } catch (Exception e) {
+        print(e.toString())
+        gitVersionName = "default_version"
+        gitVersionCode = 1
+    }
+}
+
+task printVersion() {
+    doLast {
+        println("Version Name: $gitVersionName")
+        println("Version Code: $gitVersionCode")
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'com.google.gms.google-services' // Firebase
+apply plugin: 'androidx.navigation.safeargs' // Navigation arguments
+apply plugin: 'io.fabric'
+
+
+// define tasks to report code coverage
+apply from: "$project.rootDir/tools/sonar-jacoco-multi-flavors.gradle"
+
+// define signing configs
+apply from: "$project.rootDir/signing.gradle"
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion = '28.0.3'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    // For Kotlin projects
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    defaultConfig {
+        applicationId "com.hobeez.sourcerise"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode gitVersionCode
+        versionName gitVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(appSigning.storeFilePath)
+            storePassword appSigning.storePassword
+            keyAlias appSigning.keyAlias
+            keyPassword appSigning.keyPassword
+        }
+    }
+
+    /*
+ * Connection flavors are related to mock / not mock versions.
+ * Server flavors define to which server we are connected: prod, preprod, dev, staging, local...
+ * This to be able to define mock repositories easily (create NoteRepository in "mock" folder for example)
+ * and to be able to define specific resources for preprod versions (different launcher icon, app name...).
+ * A filter is then applied to remove useless combinations.
+ */
+    flavorDimensions "connection", "server"
+
+    productFlavors {
+
+        connected {
+            dimension "connection"
+        }
+
+        mock {
+            versionNameSuffix "-Mock"
+            dimension "connection"
+        }
+
+        dev {
+            dimension "server"
+            applicationIdSuffix ".dev"
+
+            def API_BASEURL = "https://api.thecatapi.com/"
+            buildConfigField "String", "API_BASEURL", "\"${API_BASEURL}\""
+        }
+
+        prod {
+            dimension "server"
+
+            def API_BASEURL = "https://api.thecatapi.com/"
+            buildConfigField "String", "API_BASEURL", "\"${API_BASEURL}\""
+        }
+    }
+
+    buildTypes {
+
+        debug {
+            minifyEnabled false
+            debuggable true
+            testCoverageEnabled true
+        }
+
+        release {
+            //uncomment to install release and test proguard
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            jniDebuggable false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-app.pro'
+            testCoverageEnabled false
+        }
+    }
+
+    // keep only useful applicationVariants (i.e. combination of productFlavor & buildType)
+    android.variantFilter { variant ->
+        def needed = variant.name in [
+                'mockDevDebug',             // for development without server
+                //'mockProdDebug',             // for development without server
+                'connectedDevDebug',        // for development with server dev
+                //'connectedDevRelease',        // to build a dev version with bitrise
+                //'connectedProdDebugconnectedProdDebug',     // for local builds before beta release
+                'connectedProdRelease',     // for deploy to play store with bitrise
+        ]
+        variant.setIgnore(!needed)
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            all {
+                jacoco {
+                    includeNoLocationClasses = true
+                }
+            }
+        }
+    }
+
+    apply from: "$project.rootDir/tools/ktlint.gradle"
+
+}
+
+
+task printProject() {
+    doFirst {
+        println()
+        println()
+        println("Project properties :")
+        /*project.properties.each {
+            println("$it.key: $it.value")
+        }*/
+        println()
+        println("rootDir: ${project.rootDir}")
+        println("pwd: ${System.getProperty("user.dir")}")
+        println()
+    }
+}
+dokka.dependsOn printProject
+
+//Tasks
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$project.buildDir/code_documentation"
+    includeNonPublic = true
+    skipEmptyPackages = true
+    skipDeprecated = true
+
+    packageOptions {
+        prefix = "com.hobeez.sourcerise.util"
+        reportUndocumented = false
+    }
+
+    packageOptions {
+        prefix = "com.hobeez.sourcerise.data.repository"
+        reportUndocumented = false
+    }
+}
+
+
+//Dependencies
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Android
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
+    implementation 'androidx.core:core-ktx:1.1.0'
+
+    // Anko
+    implementation "org.jetbrains.anko:anko:$versions.anko"
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-auth:19.1.0'
+    implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.google.firebase:firebase-firestore:21.3.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.1.1'
+
+
+    // Koin
+    implementation "org.koin:koin-core:$versions.koin"
+    implementation "org.koin:koin-android:$versions.koin"
+    implementation "org.koin:koin-androidx-viewmodel:$versions.koin"
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttp"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+    implementation "com.squareup.moshi:moshi-adapters:$versions.moshi"
+
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxjava:$versions.rxjava2"
+    implementation "io.reactivex.rxjava2:rxkotlin:$versions.rxkotlin"
+    implementation "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+
+    // KTLint
+    ktlint "com.pinterest:ktlint:$versions.ktlint"
+
+    // Material EditText
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+
+    // Navigation
+    implementation "androidx.navigation:navigation-runtime-ktx:$versions.navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$versions.navigation"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$versions.timber"
+
+    // Tests
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Viewpager Indicator
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+
+    // Others
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+}

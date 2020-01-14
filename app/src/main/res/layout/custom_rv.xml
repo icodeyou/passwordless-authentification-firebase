@@ -1,0 +1,22 @@
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+>
+
+    <com.rolandgarros.players.android.util.customview.SmartRecyclerView
+            android:id="@+id/smartRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+    />
+
+    <TextView
+            android:id="@+id/emptyMessage"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+    />
+</RelativeLayout>

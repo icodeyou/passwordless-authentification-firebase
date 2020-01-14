@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <Blacklist></Blacklist>
+  <Whitelist>
+    <ID>ComplexMethod:NavigationExtensions.kt$ fun BottomNavigationView.setupWithNavController( navGraphIds: List&lt;Int&gt;, fragmentManager: FragmentManager, containerId: Int, intent: Intent ): LiveData&lt;NavController&gt;</ID>
+    <ID>LongMethod:NavigationExtensions.kt$ fun BottomNavigationView.setupWithNavController( navGraphIds: List&lt;Int&gt;, fragmentManager: FragmentManager, containerId: Int, intent: Intent ): LiveData&lt;NavController&gt;</ID>
+  </Whitelist>
+</SmellBaseline>

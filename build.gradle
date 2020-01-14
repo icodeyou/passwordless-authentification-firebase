@@ -1,0 +1,49 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    apply from: "./versions.gradle"
+
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url 'https://maven.fabric.io/public' // Crashlytics
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:$versions.sonar"
+        classpath "org.jacoco:org.jacoco.core:$versions.jacoco"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$versions.dokka" //Kotlin Doc
+        classpath 'com.google.gms:google-services:4.3.2' // Firebase
+        classpath 'io.fabric.tools:gradle:1.31.0' // Crashlytics
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
+
+    }
+}
+
+//Plugins
+
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC16" apply false
+}
+
+repositories {
+    jcenter()
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+    apply from: "$rootDir/tools/detekt.gradle"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

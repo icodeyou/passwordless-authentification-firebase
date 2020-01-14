@@ -1,0 +1,29 @@
+<resources>
+    <string name="error_default_message">Une erreur est survenue</string>
+    <string name="default_message_empty_view_rv">Pas de données</string>
+    <string name="error_no_connectivity">Pas de réseau</string>
+
+    <!-- Login -->
+    <string name="toast_sign_in_success">On t\'a manqué ! Content de revoir.</string>
+    <string name="toast_sign_up_success">Bienvenue sur Hobeez !</string>
+    <string name="toast_sign_up_failed">Une erreur est survenue lors de la création de votre compte</string>
+    <string name="error_phone_code">Le code est invalide</string>
+    <string name="error_login_general">Une erreur est survenue pendant la connexion</string>
+    <string name="permission_phone_denied">Vous avez besoin d\'accepter les autorisations du téléphone pour vous connecter</string>
+    <string name="email_not_valid">The email is not valid.</string>
+    <string name="toast_invalid_format_email">The email address is invalid</string>
+    <string name="toast_login_fail_link_expired">Your email adress is wrong</string>
+    <string name="toast_login_fail_email_dont_match">The link you used was expired. Make sure to use the link in the latest email.</string>
+    <string name="confirm_email_sent">A confirmation email has been sent</string>
+    <string name="invalid_verif_phone_code">Invalid verification code</string>
+    <string name="toast_error_authentication">An error happened during authentication</string>
+    <string name="warning_message_leave_login">Do you want to leave the login screen ?</string>
+    <string name="dialog_yes_button">Yes</string>
+    <string name="dialog_no_button">No</string>
+    <string name="code_resent">Code has been resent by SMS</string>
+    <string name="email_intro_new_user">We can see you\'re new to Hobeez. Thank you for joining us ! \n\nTo continue, please give us your email.</string>
+    <string name="email_intro_old_user">To let us identify you, please fill in your email adress.</string>
+
+
+    <!--What else ?-->
+</resources>

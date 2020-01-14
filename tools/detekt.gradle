@@ -1,0 +1,9 @@
+apply plugin: 'io.gitlab.arturbosch.detekt'
+
+detekt {
+    config = files("$rootDir/tools/default-detekt-config.yml")
+    filters = ".*build.*,.*/resources/.*,.*/tmp/.*"
+    parallel = true
+    //Optional baseline, uncomment & run gradle command detektBaseline to exclude existing issues
+    baseline = file("$rootDir/tools/detekt-baseline.xml")
+}

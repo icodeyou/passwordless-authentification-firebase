@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SmartRecyclerViewLayout">
+        <attr name="emptyViewText" format="string"/>
+        <attr name="paddingRV" format="dimension"/>
+        <attr name="paddingTopRV" format="dimension"/>
+        <attr name="paddingBottomRV" format="dimension"/>
+        <attr name="paddingLeftRV" format="dimension"/>
+        <attr name="paddingRightRV" format="dimension"/>
+    </declare-styleable>
+</resources>

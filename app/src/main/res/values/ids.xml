@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <item name="contentView" type="id" />
+    <item name="errorView" type="id" />
+    <item name="loadingView" type="id" />
+    <item name="frontView" type="id" />
+    <item name="backView" type="id" />
+</resources>

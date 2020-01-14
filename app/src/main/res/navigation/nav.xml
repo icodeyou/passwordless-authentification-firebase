@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav.xml"
+    app:startDestination="@id/loginHomeFragment">
+    <fragment
+        android:id="@+id/loginHomeFragment"
+        android:name="com.hobeez.sourcerise.ui.login.LoginHomeFragment"
+        android:label="LoginHomeFragment"
+        tools:layout="@layout/fragment_login_home" >
+        <action
+            android:id="@+id/action_login_email"
+            app:destination="@id/loginEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginPhoneNumberFragment"
+        android:name="com.hobeez.sourcerise.ui.login.LoginConfirmPhoneNumberFragment"
+        android:label="LoginPhoneNumberFragment"
+        tools:layout="@layout/fragment_login_confirm_phone_number" >
+        <action
+            android:id="@+id/action_with_manual_phone_number"
+            app:destination="@id/loginLoadingFragment"
+            app:launchSingleTop="true" />
+        <argument
+            android:name="phone_number"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
+    <fragment
+        android:id="@+id/loginCodeFragment"
+        android:name="com.hobeez.sourcerise.ui.login.LoginCodeFragment"
+        android:label="LoginCodeFragment"
+        tools:layout="@layout/fragment_login_code" >
+        <action
+            android:id="@+id/action_send_back_code"
+            app:destination="@id/loginLoadingFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:launchSingleTop="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginNewUserFragment"
+        android:name="com.hobeez.sourcerise.ui.login.LoginNewUserFragment"
+        android:label="LoginNewUserFragment"
+        tools:layout="@layout/fragment_login_new_user"/>
+    <fragment
+        android:id="@+id/loginLoadingFragment"
+        android:name="com.hobeez.sourcerise.ui.login.LoginLoadingFragment"
+        android:label="LoginLoadingFragment" />
+    <action
+        android:id="@+id/action_new_user_form"
+        app:destination="@id/loginNewUserFragment" />
+    <action android:id="@+id/action_code_sent_to_user" app:destination="@id/loginCodeFragment" />
+    <action android:id="@+id/action_login_home" app:destination="@id/loginHomeFragment" />
+    <fragment
+        android:id="@+id/loginEmailFragment"
+        android:name="com.hobeez.sourcerise.ui.login.LoginEmailFragment"
+        android:label="LoginEmailFragment" />
+    <fragment
+        android:id="@+id/loginConfirmEmailFragment"
+        android:name="com.hobeez.sourcerise.ui.login.LoginConfirmEmailFragment"
+        android:label="LoginConfirmEmailFragment" />
+    <action android:id="@+id/action_confirm_email" app:destination="@id/loginConfirmEmailFragment" />
+    <fragment
+        android:id="@+id/loginModaleLinkPhone"
+        android:name="com.hobeez.sourcerise.ui.login.LoginModaleLinkPhoneFragment"
+        android:label="LoginModaleLinkPhone" />
+    <action
+        android:id="@+id/action_global_loginModaleLinkPhone"
+        app:destination="@id/loginModaleLinkPhone"
+        app:enterAnim="@anim/slide_in_bottom" />
+    <action
+        android:id="@+id/action_with_phone_number"
+        app:destination="@id/loginLoadingFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out" />
+    <action
+        android:id="@+id/action_enter_phone_number"
+        app:destination="@id/loginPhoneNumberFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left" />
+    <action android:id="@+id/action_email_after_phone" app:destination="@id/loginEmailFragment" />
+</navigation>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <!-- Texts sizes -->
+    <dimen name="text_very_small">12sp</dimen>
+    <dimen name="text_small">16sp</dimen>
+    <dimen name="text_normal">18sp</dimen>
+    <dimen name="text_big">22sp</dimen>
+    <dimen name="text_huge">26sp</dimen>
+
+    <!-- Others -->
+
+</resources>
