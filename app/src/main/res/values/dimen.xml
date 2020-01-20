@@ -10,5 +10,7 @@
     <dimen name="text_huge">26sp</dimen>
 
     <!-- Others -->
+    <dimen name="default_screen_padding">20dp</dimen>
+    <dimen name="margin_vertical_sign_up_form">10dp</dimen>
 
 </resources>

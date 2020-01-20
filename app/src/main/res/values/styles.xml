@@ -38,7 +38,7 @@
     </style>
 
     <style name="LightEditText" parent="MyEditTextStyle">
-        <item name="android:textColorHint">@color/colorAccentLight</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_big</item>
     </style>

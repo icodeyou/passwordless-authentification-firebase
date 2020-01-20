@@ -81,42 +81,6 @@ android {
         }
     }
 
-    /*
- * Connection flavors are related to mock / not mock versions.
- * Server flavors define to which server we are connected: prod, preprod, dev, staging, local...
- * This to be able to define mock repositories easily (create NoteRepository in "mock" folder for example)
- * and to be able to define specific resources for preprod versions (different launcher icon, app name...).
- * A filter is then applied to remove useless combinations.
- */
-    flavorDimensions "connection", "server"
-
-    productFlavors {
-
-        connected {
-            dimension "connection"
-        }
-
-        mock {
-            versionNameSuffix "-Mock"
-            dimension "connection"
-        }
-
-        dev {
-            dimension "server"
-            applicationIdSuffix ".dev"
-
-            def API_BASEURL = "https://api.thecatapi.com/"
-            buildConfigField "String", "API_BASEURL", "\"${API_BASEURL}\""
-        }
-
-        prod {
-            dimension "server"
-
-            def API_BASEURL = "https://api.thecatapi.com/"
-            buildConfigField "String", "API_BASEURL", "\"${API_BASEURL}\""
-        }
-    }
-
     buildTypes {
 
         debug {
@@ -126,7 +90,6 @@ android {
         }
 
         release {
-            //uncomment to install release and test proguard
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
@@ -136,18 +99,6 @@ android {
         }
     }
 
-    // keep only useful applicationVariants (i.e. combination of productFlavor & buildType)
-    android.variantFilter { variant ->
-        def needed = variant.name in [
-                'mockDevDebug',             // for development without server
-                //'mockProdDebug',             // for development without server
-                'connectedDevDebug',        // for development with server dev
-                //'connectedDevRelease',        // to build a dev version with bitrise
-                //'connectedProdDebugconnectedProdDebug',     // for local builds before beta release
-                'connectedProdRelease',     // for deploy to play store with bitrise
-        ]
-        variant.setIgnore(!needed)
-    }
 
     testOptions {
         unitTests {

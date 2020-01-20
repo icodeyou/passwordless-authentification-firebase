@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">SourceRise</string>
+    <string name="app_name" translatable="false">Passwordless Firebase</string>
     <string name="error_default_message">An error has occurred</string>
     <string name="default_message_empty_view_rv">No data</string>
     <string name="error_no_connectivity">No network</string>

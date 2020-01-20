@@ -6,7 +6,7 @@
     app:startDestination="@id/loginHomeFragment">
     <fragment
         android:id="@+id/loginHomeFragment"
-        android:name="com.hobeez.sourcerise.ui.login.LoginHomeFragment"
+        android:name="com.hobeez.passwordlessfirebase.ui.login.LoginHomeFragment"
         android:label="LoginHomeFragment"
         tools:layout="@layout/fragment_login_home" >
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginPhoneNumberFragment"
-        android:name="com.hobeez.sourcerise.ui.login.LoginConfirmPhoneNumberFragment"
+        android:name="com.hobeez.passwordlessfirebase.ui.login.LoginConfirmPhoneNumberFragment"
         android:label="LoginPhoneNumberFragment"
         tools:layout="@layout/fragment_login_confirm_phone_number" >
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginCodeFragment"
-        android:name="com.hobeez.sourcerise.ui.login.LoginCodeFragment"
+        android:name="com.hobeez.passwordlessfirebase.ui.login.LoginCodeFragment"
         android:label="LoginCodeFragment"
         tools:layout="@layout/fragment_login_code" >
         <action
@@ -41,12 +41,12 @@
     </fragment>
     <fragment
         android:id="@+id/loginNewUserFragment"
-        android:name="com.hobeez.sourcerise.ui.login.LoginNewUserFragment"
+        android:name="com.hobeez.passwordlessfirebase.ui.login.LoginNewUserFragment"
         android:label="LoginNewUserFragment"
         tools:layout="@layout/fragment_login_new_user"/>
     <fragment
         android:id="@+id/loginLoadingFragment"
-        android:name="com.hobeez.sourcerise.ui.login.LoginLoadingFragment"
+        android:name="com.hobeez.passwordlessfirebase.ui.login.LoginLoadingFragment"
         android:label="LoginLoadingFragment" />
     <action
         android:id="@+id/action_new_user_form"
@@ -55,16 +55,16 @@
     <action android:id="@+id/action_login_home" app:destination="@id/loginHomeFragment" />
     <fragment
         android:id="@+id/loginEmailFragment"
-        android:name="com.hobeez.sourcerise.ui.login.LoginEmailFragment"
+        android:name="com.hobeez.passwordlessfirebase.ui.login.LoginEmailFragment"
         android:label="LoginEmailFragment" />
     <fragment
         android:id="@+id/loginConfirmEmailFragment"
-        android:name="com.hobeez.sourcerise.ui.login.LoginConfirmEmailFragment"
+        android:name="com.hobeez.passwordlessfirebase.ui.login.LoginConfirmEmailFragment"
         android:label="LoginConfirmEmailFragment" />
     <action android:id="@+id/action_confirm_email" app:destination="@id/loginConfirmEmailFragment" />
     <fragment
         android:id="@+id/loginModaleLinkPhone"
-        android:name="com.hobeez.sourcerise.ui.login.LoginModaleLinkPhoneFragment"
+        android:name="com.hobeez.passwordlessfirebase.ui.login.LoginModaleLinkPhoneFragment"
         android:label="LoginModaleLinkPhone" />
     <action
         android:id="@+id/action_global_loginModaleLinkPhone"
