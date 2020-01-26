@@ -1,7 +1,6 @@
 package com.hobeez.passwordlessfirebase.ui.login
 
 import android.content.DialogInterface
-import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -39,10 +38,8 @@ class LoginActivity : BaseActivity() {
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
                 Timber.i("Deep Link Callback : Success.")
 
-                // Get deep link from result (may be null if no link is found)
-                var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
+                    val deepLink = pendingDynamicLinkData.link // Get deep link from result (may be null if no link is found)
                     navController.navigate(R.id.action_confirm_email)
                 }
             }

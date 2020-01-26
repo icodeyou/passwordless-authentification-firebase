@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:host="sourcerise-jack.firebaseapp.com"
+                    android:host="passwordless-authentication.firebaseapp.com"
                     android:scheme="https" />
             </intent-filter>
         </activity>

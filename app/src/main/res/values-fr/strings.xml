@@ -23,6 +23,7 @@
     <string name="code_resent">Code has been resent by SMS</string>
     <string name="email_intro_new_user">We can see you\'re new to Hobeez. Thank you for joining us ! \n\nTo continue, please give us your email.</string>
     <string name="email_intro_old_user">To let us identify you, please fill in your email adress.</string>
+    <string name="error_sending_email">An error occured while sending the email</string>
 
 
     <!--What else ?-->

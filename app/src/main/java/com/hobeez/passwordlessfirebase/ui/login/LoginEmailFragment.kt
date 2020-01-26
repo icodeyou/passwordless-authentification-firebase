@@ -34,7 +34,8 @@ class LoginEmailFragment : BaseFragment() {
             if (email.isEmailValid()) {
                 AuthUtil.sendEmailToUser(
                     email,
-                    { toast(getString(R.string.confirm_email_sent)) }
+                    onSuccess = { toast(getString(R.string.confirm_email_sent)) },
+                    onFail = { toast(getString(R.string.error_sending_email)) }
                 )
             } else {
                 toast(getString(R.string.email_not_valid))

@@ -210,14 +210,18 @@ class AuthUtil {
             }
         }
 
-        fun sendEmailToUser(email: String, callback: () -> Unit) {
+        fun sendEmailToUser(
+            email: String,
+            onSuccess: () -> Unit,
+            onFail: () -> Unit
+        ) {
             Timber.d("Logging user with email")
             val actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl("http://sourcerise-jack.firebaseapp.com")
+                .setUrl("http://passwordless-authentication.firebaseapp.com")
                 // This must be true
                 .setHandleCodeInApp(true)
                 .setAndroidPackageName(
-                    "com.hobeez.sourcerise.dev",
+                    "com.hobeez.passwordlessfirebase",
                     true, /* installIfNotAvailable */
                     "1" /* minimumVersion */
                 )
@@ -226,9 +230,10 @@ class AuthUtil {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Timber.d("Email sent.")
-                        callback.invoke()
+                        onSuccess()
                     } else {
                         Timber.d("An error occured while sending the email : ${task.exception}")
+                        onFail()
                     }
                 }
         }

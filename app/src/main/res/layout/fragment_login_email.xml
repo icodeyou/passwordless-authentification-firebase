@@ -55,7 +55,7 @@
         app:layout_constraintTop_toBottomOf="@id/btEmailLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="A magic link will be sent to this email. \nClick on it to log into SourceRise."/>
+        android:text="A magic link will be sent to this email. \nClick on it to log in."/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

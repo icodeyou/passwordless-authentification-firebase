@@ -1,8 +1,11 @@
 # PASSWORDLESS AUTHENTICATION WITH FIREBASE
 
 ## Description
-This open source project is an example that shows you how to use Firebase Authentication without any password.
-There are two providers :
+PAF (Passwordless Authentication Firebase) is an open source Android application.
+Its purpose is to connect the user with email or phone without asking him any password.
+Get a look at the code and see how to implement Firebase Authentication.
+
+The app is combining two providers that don't require any password :
 - Email magic link
 - Phone Number
 
@@ -14,13 +17,19 @@ Ask to be a contributor, and be added to the Firebase project.
 
 ## Getting started
 
-1. Ask to be 
+Steps 2 and 3 are necessary if you want to access to the Firebase console
 
-2. Import the project in Android Studio :
-    - File => Open
-    - Select the project directory
+1. Clone the project
 
-3. Install [ktlint](https://github.com/pinterest/ktlint) .
+2. Rename the package (ex : `com.test.login`)
+Be careful not to leave any text `com.hobeez.passwordlessfirebase in the project.
+
+3. Configure Firebase
+- Get SHA1 and add your project to Firebase, using SHA1 and the new package name.
+- Enable email, email link and phone authentication.
+- Configure dynamic link in Firebase console, and replace `https://passwordlessfirebase.page.link` with your URL in `AndroidManifest` and `AuhUtil`
+
+4. Install [ktlint](https://github.com/pinterest/ktlint) .
 You can use the command :
     
     `curl -sSLO https://github.com/shyiko/ktlint/releases/download/0.31.0/ktlint &&
@@ -29,7 +38,7 @@ You can use the command :
     
     On macOS (or Linux) you can also use brew : `brew install ktlint`.
   
-4. Setup the [Ktlint](https://ktlint.github.io/) linter tools with `./gradlew setupProject`
+5. Setup the [Ktlint](https://ktlint.github.io/) linter tools with `./gradlew setupProject`
     -  Configures intelliJ code formatter
     -  Adds a git commit prehook to check code format with ktlint
 Note : If you use sourcetree, to ensure it works with ktlint, add export PATH=/usr/local/bin:$PATH in .git/hooks/pre-commit
@@ -264,3 +273,7 @@ Implementations are bound to services using Dependency Injection.
 We tend to separate domain entities from data entities. Domain entities are the ones used by UI and ViewModels logic. Data entities are only API wrappers, used for parsing data before/after network requests.
 
 If there is no need to have separate objects (yet), we put the entity under the domain package.
+
+## Credentials
+
+The password for the keystore is : `opensource`

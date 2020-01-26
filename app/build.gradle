@@ -59,7 +59,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.hobeez.sourcerise"
+        applicationId "com.hobeez.passwordlessfirebase"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode gitVersionCode
@@ -141,12 +141,7 @@ dokka {
     skipDeprecated = true
 
     packageOptions {
-        prefix = "com.hobeez.sourcerise.util"
-        reportUndocumented = false
-    }
-
-    packageOptions {
-        prefix = "com.hobeez.sourcerise.data.repository"
+        prefix = "com.hobeez.passwordlessfirebase.util"
         reportUndocumented = false
     }
 }
