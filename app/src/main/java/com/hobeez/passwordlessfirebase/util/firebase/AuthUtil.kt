@@ -176,7 +176,9 @@ class AuthUtil {
                                         if (user?.hasValidFields() == true) {
                                             loginActivity.onSignInSuccess()
                                         } else {
-                                            val newUserFragmentBundle = bundleOf("uid" to phoneUser.uid)
+                                            val newUserFragmentBundle = bundleOf(
+                                                "uid" to phoneUser.uid,
+                                                "email" to phoneUser.email)
                                             loginActivity.navController.navigate(R.id.action_new_user_form, newUserFragmentBundle)
                                         }
                                     }
