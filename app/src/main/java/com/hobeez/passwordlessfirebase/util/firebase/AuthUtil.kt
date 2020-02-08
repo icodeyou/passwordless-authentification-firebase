@@ -268,18 +268,7 @@ class AuthUtil {
                                 if (result.additionalUserInfo?.isNewUser == true) {
                                     onSuccessNewUser.invoke(firebaseUid)
                                 } else {
-                                    FirestoreUtil.getUserFromUid(firebaseUid)
-                                        .addOnSuccessListener { user ->
-                                            // if user exists in Firebase Authentication DB, but not in Firestore DB
-                                            if (user == null) {
-                                                onSuccessNewUser.invoke(firebaseUid)
-                                            } else {
-                                                onSuccessExistingUser.invoke()
-                                            }
-                                        }
-                                        .addOnFailureListener { e ->
-                                            Timber.e("Failure getting user $firebaseUid - $e")
-                                        }
+                                    AuthUtil.doesUserExistInFirestore(firebaseUid,onSuccessNewUser, onSuccessExistingUser)
                                 }
                             } else {
                                 Timber.e("Error signing in with email link : ${task.exception}")
@@ -303,6 +292,21 @@ class AuthUtil {
                     Timber.e("Error while signing in with email link : $e")
                 }
             }
+        }
+
+        fun doesUserExistInFirestore(firebaseUid: String, onSuccessNewUser: (uid: String) -> Unit, onSuccessExistingUser: () -> Unit) {
+            FirestoreUtil.getUserFromUid(firebaseUid)
+                .addOnSuccessListener { user ->
+                    // if user exists in Firebase Authentication DB, but not in Firestore DB
+                    if (user == null) {
+                        onSuccessNewUser.invoke(firebaseUid)
+                    } else {
+                        onSuccessExistingUser.invoke()
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Timber.e("Failure getting user $firebaseUid - $e")
+                }
         }
 
         fun signOut() {
