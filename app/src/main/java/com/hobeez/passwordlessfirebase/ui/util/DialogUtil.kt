@@ -11,9 +11,9 @@ class DialogUtil {
             title: String?,
             message: String,
             okButtonTitle: String?,
-            okButtonAction: DialogInterface.OnClickListener?,
+            okButtonAction: (dialog: DialogInterface) -> Unit,
             cancelButtonTitle: String?,
-            cancelButtonAction: DialogInterface.OnClickListener?
+            cancelButtonAction: (dialog: DialogInterface) -> Unit
             ): AlertDialog {
 
             val builder: AlertDialog.Builder = activity.let {
@@ -23,8 +23,8 @@ class DialogUtil {
             builder.setTitle(title)
                 .setMessage(message)
 
-            builder.setPositiveButton(okButtonTitle, okButtonAction)
-            builder.setNegativeButton(cancelButtonTitle, cancelButtonAction)
+            builder.setPositiveButton(okButtonTitle) { dialog,_ -> okButtonAction(dialog) }
+            builder.setNegativeButton(cancelButtonTitle) { dialog,_ -> cancelButtonAction(dialog) }
 
             val dialog = builder.create()
             dialog.show()

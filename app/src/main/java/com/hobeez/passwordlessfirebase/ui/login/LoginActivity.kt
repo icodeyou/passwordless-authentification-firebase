@@ -1,6 +1,5 @@
 package com.hobeez.passwordlessfirebase.ui.login
 
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -52,13 +51,9 @@ class LoginActivity : BaseActivity() {
                 null,
                 getString(R.string.warning_message_leave_login),
                 getString(R.string.dialog_yes_button),
-                DialogInterface.OnClickListener {_, _ ->
-                    end()
-                },
+                { end() },
                 getString(R.string.dialog_no_button),
-                DialogInterface.OnClickListener {dialog, _ ->
-                    dialog.dismiss()
-                }
+                {dialog -> dialog.dismiss() }
             )
         } else {
             end()
